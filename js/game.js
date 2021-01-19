@@ -3,7 +3,7 @@ const ctx = canvas.getContext('2d');
 
 let activeSquare = null;
 let drag = null;
-
+let score2 = document.getElementById("petr");
 let score = 0;
 
 
@@ -44,10 +44,17 @@ class Square {
             ctx.lineWidth = 5;
             ctx.strokeRect(this.x, this.y, this.size, this.size);
             ctx.closePath();
+            
         }
         ctx.setTransform(1, 0, 0, 1, 0, 0);
     }
+
+
+
+
 }
+
+
 
 
 class Game {
@@ -63,7 +70,9 @@ class Game {
     draw() {
         ctx.clearRect(0, 0, canvas.width, canvas.height);
         this.squares.forEach(function(obj, index) {
-            if (obj.active) obj.move();
+            if (obj.active);{
+
+            };
             obj.draw();
         });
     }
@@ -76,10 +85,14 @@ class Game {
 
 canvas.addEventListener('mousedown', function(event) {  
     activeSquare = null;  
-    game.squares.forEach(function(obj) {        
+    game.squares.forEach(function(obj, index, array) {        
         if (obj.detectCursor(event.offsetX, event.offsetY)) {
             obj.active = true;
-            activeSquare = obj;
+           /* activeSquare = obj;  */ 
+           array.splice(index,1);
+            console.log(array.length);
+            score++;
+            score2.innerHTML=score;
         } else {
             obj.active = false;
         }
@@ -92,13 +105,6 @@ canvas.addEventListener('mousedown', function(event) {
 
 
 
-
-
-
-
-
-
-
 document.addEventListener('keydown', function(event) { 
     if (activeSquare) 
         activeSquare.keys[event.code] = true;
@@ -107,14 +113,7 @@ document.addEventListener('keydown', function(event) {
 
 
     if (event.code === 'Insert') {
-        document.removeEventListener  ("keydown", function(event){}); 
-        setInterval (function(){
-            let x = Math.floor(Math.random() * (canvas.width - Square.DEFAULT_SIZE)); 
-            let y = Math.floor(Math.random() * (canvas.height - Square.DEFAULT_SIZE)); 
-            game.addSquare(x, y); 
-            
-        }
-        ,500)
+        
        
         
     }  
@@ -142,3 +141,13 @@ function animate() {
 let game = new Game();
 
 game.play();
+function start(){
+    document.removeEventListener  ("keydown", function(event){}); 
+    setInterval (function(){
+        let x = Math.floor(Math.random() * (canvas.width - Square.DEFAULT_SIZE)); 
+        let y = Math.floor(Math.random() * (canvas.height - Square.DEFAULT_SIZE)); 
+        game.addSquare(x, y); 
+        
+    }
+    ,500)
+}
